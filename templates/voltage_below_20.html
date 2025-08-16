@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Voltage Below 20V - Voltage Analysis Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-5">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-exclamation-triangle me-3"></i>Voltage Below 20V Analysis
+                </h1>
+                <p class="page-subtitle">
+                    Monitor critical voltage drops below 20V threshold with timestamp tracking
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Voltage Instances Below 20V
+                    </h3>
+                    <p class="card-subtitle">
+                        Red X markers indicate voltage drops below the 20V threshold, red dashed line shows the threshold
+                    </p>
+                </div>
+                <div class="chart-container">
+                    <div id="below20Chart" class="plotly-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-table me-2"></i>Voltage Below 20V - Data Table
+                </h3>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Voltage (V)</th>
+                                <th>Deviation from Threshold</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for _, row in below_20_data.iterrows() %}
+                            <tr>
+                                <td>{{ row['Timestamp'].strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ "%.2f"|format(row['Voltage']) }}</td>
+                                <td>{{ "%.2f"|format(20 - row['Voltage']) }}V below</td>
+                                <td>
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>Critical
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-brain me-2"></i>Analysis & Interpretation
+                </h3>
+                <div class="analysis-content">
+                    <h5>Threshold Monitoring Results:</h5>
+                    <ul class="analysis-list">
+                        <li><strong>Threshold Level:</strong> 20V - Critical voltage level for system operation</li>
+                        <li><strong>Critical Instances:</strong> {{ below_20_data|length }} data points below threshold</li>
+                        <li><strong>Detection Method:</strong> Boolean filtering on voltage values < 20V</li>
+                        <li><strong>Data Coverage:</strong> Showing first 50 instances for detailed analysis</li>
+                    </ul>
+                    
+                    <h5>Key Insights:</h5>
+                    <ul class="analysis-list">
+                        <li>Voltage drops below 20V indicate potential system instability or power issues</li>
+                        <li>The frequency and duration of these drops help assess system reliability</li>
+                        <li>Timestamps provide crucial information for troubleshooting and maintenance</li>
+                        <li>This monitoring is essential for preventive maintenance and system health assessment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-info-circle me-2"></i>Technical Details
+                </h3>
+                <div class="tech-details">
+                    <div class="tech-item">
+                        <span class="tech-label">Threshold:</span>
+                        <span class="tech-value">20V</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Detection:</span>
+                        <span class="tech-value">Boolean Filter</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Data Display:</span>
+                        <span class="tech-value">Top 50 Results</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Visualization:</span>
+                        <span class="tech-value">Plotly.js</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Parse the JSON data and render the chart
+    const chartData = JSON.parse('{{ graph_json | safe }}');
+    Plotly.newPlot('below20Chart', chartData.data, chartData.layout, {
+        responsive: true,
+        displayModeBar: true,
+        modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d']
+    });
+    
+    // Make chart responsive
+    window.addEventListener('resize', function() {
+        Plotly.Plots.resize('below20Chart');
+    });
+</script>
+{% endblock %} 

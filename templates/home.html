@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Voltage Analysis Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="hero-card text-center p-5">
+                <h1 class="display-4 fw-bold text-gradient mb-4">
+                    <i class="fas fa-bolt me-3"></i>Voltage Analysis Dashboard
+                </h1>
+                <p class="lead text-light mb-4">
+                    Advanced voltage signal analysis and visualization platform for electrical engineering applications
+                </p>
+                <div class="hero-stats">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                                <h3 class="text-light">5</h3>
+                                <p class="text-muted">Analysis Types</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <i class="fas fa-database fa-2x text-success mb-2"></i>
+                                <h3 class="text-light">10K+</h3>
+                                <p class="text-muted">Data Points</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                                <h3 class="text-light">24/7</h3>
+                                <p class="text-muted">Real-time</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <i class="fas fa-mobile-alt fa-2x text-info mb-2"></i>
+                                <h3 class="text-light">100%</h3>
+                                <p class="text-muted">Responsive</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Description -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="content-card">
+                <h2 class="card-title mb-4">
+                    <i class="fas fa-info-circle me-2"></i>Project Overview
+                </h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="text-light mb-3">
+                            This dashboard presents a comprehensive analysis of voltage signal data, implementing advanced 
+                            signal processing techniques to identify key patterns, trends, and anomalies in electrical systems.
+                        </p>
+                        <p class="text-light mb-3">
+                            The analysis includes trend detection, moving average calculations, peak and trough identification, 
+                            threshold monitoring, and acceleration cycle detection - all essential for electrical engineering 
+                            applications and system monitoring.
+                        </p>
+                        <p class="text-light">
+                            Built with modern web technologies including Flask, Plotly, and Bootstrap 5, this dashboard 
+                            provides an interactive and professional interface for data scientists and engineers.
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tech-stack">
+                            <h5 class="text-light mb-3">Technology Stack</h5>
+                            <div class="tech-item">
+                                <i class="fab fa-python me-2"></i>Python/Flask
+                            </div>
+                            <div class="tech-item">
+                                <i class="fas fa-chart-bar me-2"></i>Plotly.js
+                            </div>
+                            <div class="tech-item">
+                                <i class="fab fa-bootstrap me-2"></i>Bootstrap 5
+                            </div>
+                            <div class="tech-item">
+                                <i class="fas fa-database me-2"></i>Pandas/NumPy
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Cards -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="section-title mb-4">
+                <i class="fas fa-chart-pie me-2"></i>Analysis Modules
+            </h2>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Trend Analysis -->
+        <div class="col-lg-4 col-md-6">
+            <div class="analysis-card" onclick="window.location.href='{{ url_for('voltage_trend') }}'">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4 class="card-title">Trend Analysis</h4>
+                <p class="card-description">
+                    Analyze voltage trends over time with polynomial trendlines and statistical insights
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">Trendline</span>
+                    <span class="feature-tag">Statistics</span>
+                    <span class="feature-tag">Patterns</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moving Averages -->
+        <div class="col-lg-4 col-md-6">
+            <div class="analysis-card" onclick="window.location.href='{{ url_for('moving_averages') }}'">
+                <div class="card-icon">
+                    <i class="fas fa-chart-area"></i>
+                </div>
+                <h4 class="card-title">Moving Averages</h4>
+                <p class="card-description">
+                    Compare multiple moving average windows to identify smoothing patterns and trends
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">5-Point MA</span>
+                    <span class="feature-tag">1000-Point MA</span>
+                    <span class="feature-tag">5000-Point MA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Peaks & Troughs -->
+        <div class="col-lg-4 col-md-6">
+            <div class="analysis-card" onclick="window.location.href='{{ url_for('peaks_troughs') }}'">
+                <div class="card-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h4 class="card-title">Peaks & Troughs</h4>
+                <p class="card-description">
+                    Identify local maxima and minima in the voltage signal with detailed data tables
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">Peaks</span>
+                    <span class="feature-tag">Troughs</span>
+                    <span class="feature-tag">Tables</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Below 20V -->
+        <div class="col-lg-4 col-md-6">
+            <div class="analysis-card" onclick="window.location.href='{{ url_for('voltage_below_20') }}'">
+                <div class="card-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h4 class="card-title">Voltage Below 20V</h4>
+                <p class="card-description">
+                    Monitor critical voltage drops below 20V threshold with timestamp tracking
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">Threshold</span>
+                    <span class="feature-tag">Monitoring</span>
+                    <span class="feature-tag">Alerts</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acceleration -->
+        <div class="col-lg-4 col-md-6">
+            <div class="analysis-card" onclick="window.location.href='{{ url_for('downward_acceleration') }}'">
+                <div class="card-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <h4 class="card-title">Downward Acceleration</h4>
+                <p class="card-description">
+                    Detect accelerating downward slope cycles using first and second derivatives
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">Derivatives</span>
+                    <span class="feature-tag">Acceleration</span>
+                    <span class="feature-tag">Cycles</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Upload -->
+        <div class="col-lg-4 col-md-6">
+            <div class="analysis-card upload-card">
+                <div class="card-icon">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <h4 class="card-title">Data Upload</h4>
+                <p class="card-description">
+                    Upload your own CSV data for custom analysis (coming soon)
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">CSV</span>
+                    <span class="feature-tag">Custom</span>
+                    <span class="feature-tag">Soon</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author Info -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="content-card text-center">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-user-graduate me-2"></i>About the Developer
+                </h3>
+                <p class="text-light mb-2">
+                    <strong>Milind Kashyap</strong> - E22CSEU1317
+                </p>
+                <p class="text-muted">
+                    Bennett University | Computer Science Engineering
+                </p>
+                <p class="text-light">
+                    This project demonstrates advanced data analysis techniques applied to electrical engineering data, 
+                    showcasing skills in Python programming, signal processing, and web development.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Trend Analysis - Voltage Analysis Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-5">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-chart-line me-3"></i>Voltage Trend Analysis
+                </h1>
+                <p class="page-subtitle">
+                    Analyze voltage trends over time with polynomial trendlines and statistical insights
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ stats.total_points }}</h3>
+                    <p class="stat-label">Total Data Points</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ stats.mean_voltage }}V</h3>
+                    <p class="stat-label">Mean Voltage</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ stats.max_voltage }}V</h3>
+                    <p class="stat-label">Max Voltage</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ stats.min_voltage }}V</h3>
+                    <p class="stat-label">Min Voltage</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line me-2"></i>Voltage vs Timestamp with Trendline
+                    </h3>
+                    <p class="card-subtitle">
+                        The blue line represents the actual voltage values, while the red dashed line shows the polynomial trendline
+                    </p>
+                </div>
+                <div class="chart-container">
+                    <div id="voltageChart" class="plotly-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-brain me-2"></i>Analysis & Interpretation
+                </h3>
+                <div class="analysis-content">
+                    <h5>Trend Analysis Results:</h5>
+                    <ul class="analysis-list">
+                        <li><strong>Trend Slope:</strong> {{ stats.trend_slope }} - This indicates the overall direction and rate of change in voltage over time</li>
+                        <li><strong>Data Coverage:</strong> {{ stats.total_points }} data points provide comprehensive coverage for trend analysis</li>
+                        <li><strong>Voltage Range:</strong> From {{ stats.min_voltage }}V to {{ stats.max_voltage }}V, showing significant variation</li>
+                        <li><strong>Mean Voltage:</strong> {{ stats.mean_voltage }}V represents the central tendency of the voltage signal</li>
+                    </ul>
+                    
+                    <h5>Key Insights:</h5>
+                    <ul class="analysis-list">
+                        <li>The polynomial trendline reveals the underlying pattern in the voltage data</li>
+                        <li>Positive slope indicates increasing voltage trend, negative slope indicates decreasing trend</li>
+                        <li>Variations around the trendline suggest noise or cyclical patterns in the signal</li>
+                        <li>This analysis is crucial for understanding long-term voltage behavior in electrical systems</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-info-circle me-2"></i>Technical Details
+                </h3>
+                <div class="tech-details">
+                    <div class="tech-item">
+                        <span class="tech-label">Analysis Method:</span>
+                        <span class="tech-value">Polynomial Regression</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Trendline Order:</span>
+                        <span class="tech-value">Linear (1st degree)</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Data Processing:</span>
+                        <span class="tech-value">Pandas + NumPy</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Visualization:</span>
+                        <span class="tech-value">Plotly.js</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Debug: Check if Plotly is loaded
+    console.log('Plotly loaded:', typeof Plotly !== 'undefined');
+    
+    // Debug: Check the chart data
+    console.log('Chart data received:', '{{ graph_json | safe }}');
+    
+    try {
+        // Parse the JSON data and render the chart
+        const chartData = JSON.parse('{{ graph_json | safe }}');
+        console.log('Parsed chart data:', chartData);
+        
+        if (chartData && chartData.data && chartData.layout) {
+            Plotly.newPlot('voltageChart', chartData.data, chartData.layout, {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+                displaylogo: false
+            });
+            
+            console.log('Chart rendered successfully');
+            
+            // Make chart responsive
+            window.addEventListener('resize', function() {
+                Plotly.Plots.resize('voltageChart');
+            });
+        } else {
+            console.error('Invalid chart data structure:', chartData);
+            document.getElementById('voltageChart').innerHTML = 
+                '<div class="alert alert-danger">Error: Invalid chart data structure</div>';
+        }
+    } catch (error) {
+        console.error('Error rendering chart:', error);
+        document.getElementById('voltageChart').innerHTML = 
+            '<div class="alert alert-danger">Error rendering chart: ' + error.message + '</div>';
+    }
+</script>
+{% endblock %} 

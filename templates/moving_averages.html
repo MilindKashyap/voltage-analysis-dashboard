@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Moving Averages - Voltage Analysis Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-5">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-chart-area me-3"></i>Moving Averages Analysis
+                </h1>
+                <p class="page-subtitle">
+                    Compare multiple moving average windows to identify smoothing patterns and trends
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-area me-2"></i>Voltage with Multiple Moving Averages
+                    </h3>
+                    <p class="card-subtitle">
+                        Different moving average windows reveal short-term and long-term trends in the voltage signal
+                    </p>
+                </div>
+                <div class="chart-container">
+                    <div id="movingAvgChart" class="plotly-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-brain me-2"></i>Analysis & Interpretation
+                </h3>
+                <div class="analysis-content">
+                    <h5>Moving Average Analysis:</h5>
+                    <ul class="analysis-list">
+                        <li><strong>5-Point Moving Average (Red):</strong> Shows short-term trends and smooths out minor fluctuations</li>
+                        <li><strong>1000-Point Moving Average (Teal):</strong> Reveals medium-term patterns and reduces noise</li>
+                        <li><strong>5000-Point Moving Average (Yellow):</strong> Indicates long-term trends and overall signal direction</li>
+                        <li><strong>Original Signal (Blue):</strong> Displays raw voltage data with all variations and noise</li>
+                    </ul>
+                    
+                    <h5>Key Insights:</h5>
+                    <ul class="analysis-list">
+                        <li>Shorter moving averages are more responsive to recent changes but more volatile</li>
+                        <li>Longer moving averages provide smoother trends but may lag behind actual changes</li>
+                        <li>Crossovers between different moving averages can signal trend changes</li>
+                        <li>This analysis helps distinguish between noise and genuine signal patterns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="content-card">
+                <h3 class="card-title mb-3">
+                    <i class="fas fa-info-circle me-2"></i>Technical Details
+                </h3>
+                <div class="tech-details">
+                    <div class="tech-item">
+                        <span class="tech-label">MA Windows:</span>
+                        <span class="tech-value">5, 1000, 5000</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Calculation:</span>
+                        <span class="tech-value">Rolling Mean</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Data Processing:</span>
+                        <span class="tech-value">Pandas Rolling</span>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-label">Visualization:</span>
+                        <span class="tech-value">Plotly.js</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Parse the JSON data and render the chart
+    const chartData = JSON.parse('{{ graph_json | safe }}');
+    Plotly.newPlot('movingAvgChart', chartData.data, chartData.layout, {
+        responsive: true,
+        displayModeBar: true,
+        modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d']
+    });
+    
+    // Make chart responsive
+    window.addEventListener('resize', function() {
+        Plotly.Plots.resize('movingAvgChart');
+    });
+</script>
+{% endblock %} 
