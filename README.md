@@ -43,6 +43,31 @@ This app is configured for deployment on:
 
 Visit: [Your deployed URL will be here]
 
+## Deployment to Render
+
+### Method 1: Using render.yaml (Recommended)
+1. Push your code to a GitHub repository
+2. Go to [Render Dashboard](https://dashboard.render.com/)
+3. Click "New +" and select "Web Service"
+4. Connect your GitHub repository
+5. Render will automatically detect the `render.yaml` file and configure the deployment
+6. Click "Create Web Service"
+
+### Method 2: Manual Configuration
+1. Push your code to a GitHub repository
+2. Go to [Render Dashboard](https://dashboard.render.com/)
+3. Click "New +" and select "Web Service"
+4. Connect your GitHub repository
+5. Configure the service:
+   - **Name**: voltage-analysis-dashboard
+   - **Environment**: Python
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn app:app`
+   - **Plan**: Free
+6. Click "Create Web Service"
+
+Your app will be deployed and available at: `https://your-app-name.onrender.com`
+
 ## License
 
 MIT License 
